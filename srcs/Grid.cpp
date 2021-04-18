@@ -1,10 +1,12 @@
 #include "Grid.hpp"
 #include <list>
 #include <map>
+#include <string>
 
 Grid& Grid::operator=(const Grid& other)
 {
 	_cells = other._cells;
+	_move_count = other._move_count;
 	return *this;
 }
 
@@ -12,7 +14,6 @@ Grid::Grid(const Grid& other)
 {
 	*this = other;
 }
-
 
 /**
  * @brief Lance l'algorithme de gravité pour jouer les coups
@@ -30,6 +31,7 @@ bool Grid::play_move(const size_t& x, const size_t& val)
 		y++;
 
 	set(x, y - 1, val);
+	_move_count++;
 	return true;
 }
 
@@ -76,15 +78,15 @@ std::list<std::array<int, 2>> Grid::get_winning_positions(const size_t& turn)
  *
  * @return La liste des coups légaux dans la grille
  */
-std::multimap<size_t, size_t, std::greater<size_t>> Grid::get_ai_moves(const size_t& turn) const
+std::multimap<float, size_t, std::greater<float>> Grid::get_ai_moves(const size_t& turn) const
 {
-	std::multimap<size_t, size_t, std::greater<size_t>> moves;
+	std::multimap<float, size_t, std::greater<float>> moves;
 
 	for (int x = 0; x < GRID_WIDTH; x++)
 	{
 		if (get(x, 0) != EMPTY_CELL)
 			continue;
-		moves.insert(std::make_pair(get_after_move(x, turn).get_winning_positions(turn).size(), x));
+		moves.insert(std::make_pair((GRID_HEIGHT / 2 - std::abs(GRID_HEIGHT / 2 - x)) / 2.0f, x));
 	}
 
 	return moves;
@@ -190,4 +192,10 @@ void	Grid::print() const
 	}
 	size_t val = check_win();
 	std::cout << (val == 0 ? "Pas win" : (val == 1 ? "Rouge win" : "Jaune win")) << std::endl << std::endl;
+}
+
+
+uint8_t Grid::get_move_count() const
+{
+	return _move_count;
 }

@@ -7,6 +7,6 @@
 #include <limits>
 
 
-std::pair<float, size_t>	connect_4_minimax(const Grid& grid, const size_t& turn, const size_t& depth);
+size_t	get_best_move(const Grid& grid, const size_t& turn, const size_t& depth);
 
 #endif
