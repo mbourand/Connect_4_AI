@@ -10,7 +10,7 @@
  */
 bool	play_ai_move(Grid& grid, const Turn& turn)
 {
-	size_t ai_move = get_best_move(grid, turn.color, 11);
+	size_t ai_move = get_best_move(grid, turn.color, 12);
 	if (ai_move >= GRID_WIDTH)
 		return false;
 

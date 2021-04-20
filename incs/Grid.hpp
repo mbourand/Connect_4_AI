@@ -93,7 +93,6 @@ class Grid
 
 		uint8_t get_move_count() const;
 
-
 		void print() const;
 };
 

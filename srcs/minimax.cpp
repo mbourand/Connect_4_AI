@@ -1,9 +1,13 @@
 #include "minimax.hpp"
+#include <unordered_map>
+#include <numeric>
 
-static inline	size_t change_turn(const size_t& turn)
+static inline size_t	change_turn(const size_t& turn)
 {
 	return (turn == RED_CELL ? YELLOW_CELL : RED_CELL);
 }
+
+
 
 static std::pair<float, size_t>		connect_4_negamax(const Grid& grid, const size_t& base_turn, const size_t& turn, const size_t& depth, float alpha, float beta)
 {
@@ -11,6 +15,24 @@ static std::pair<float, size_t>		connect_4_negamax(const Grid& grid, const size_
 		return std::make_pair(0, -1);
 	if (depth == 0)
 		return std::make_pair((rand() % 100) / 110.0f * (rand() % 2 ? 1 : -1), -1);
+
+	int min_theoretical_score = -(GRID_WIDTH * GRID_HEIGHT - 2 - grid.get_move_count()) / 2;
+	if (beta < min_theoretical_score)
+	{
+		beta = min_theoretical_score;
+		if (beta <= alpha)
+			return std::make_pair(beta, -1);
+	}
+
+
+	int max_theoretical_score = (GRID_WIDTH * GRID_HEIGHT - 1 - grid.get_move_count()) / 2;
+	if (alpha > max_theoretical_score)
+	{
+		alpha = max_theoretical_score;
+		if (beta <= alpha)
+			return std::make_pair(alpha, -1);
+	}
+
 
 	auto moves = grid.get_ai_moves(turn);
 

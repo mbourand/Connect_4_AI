@@ -3,6 +3,13 @@
 #include <map>
 #include <string>
 
+Grid::Grid(const Grid& other)
+{
+	*this = other;
+}
+
+
+
 Grid& Grid::operator=(const Grid& other)
 {
 	_cells = other._cells;
@@ -10,10 +17,7 @@ Grid& Grid::operator=(const Grid& other)
 	return *this;
 }
 
-Grid::Grid(const Grid& other)
-{
-	*this = other;
-}
+
 
 /**
  * @brief Lance l'algorithme de gravité pour jouer les coups
@@ -36,6 +40,7 @@ bool Grid::play_move(const size_t& x, const size_t& val)
 }
 
 
+
 /**
  * @brief Retourne une copie de la grille après un coup sur la colonne move
  *
@@ -51,7 +56,12 @@ Grid Grid::get_after_move(const size_t& move, const size_t& val) const
 }
 
 
-
+/**
+ * @brief Retourne la liste des cases qui gagnent instantanément la partie pour un joueur
+ *
+ * @param turn
+ * @return la liste des cases qui gagnent instantanément la partie pour un joueur
+ */
 std::list<std::array<int, 2>> Grid::get_winning_positions(const size_t& turn)
 {
 	std::list<std::array<int, 2>> res;
@@ -73,6 +83,7 @@ std::list<std::array<int, 2>> Grid::get_winning_positions(const size_t& turn)
 }
 
 
+
 /**
  * @brief Retourne la liste des coups légaux dans la grille
  *
@@ -91,6 +102,7 @@ std::multimap<float, size_t, std::greater<float>> Grid::get_ai_moves(const size_
 
 	return moves;
 }
+
 
 
 /**
@@ -116,6 +128,8 @@ size_t Grid::check_win() const
 	return EMPTY_CELL;
 }
 
+
+
 size_t Grid::check_win_raw(size_t x, const size_t& y, const size_t& val) const
 {
 	size_t i = 0;
@@ -129,6 +143,8 @@ size_t Grid::check_win_raw(size_t x, const size_t& y, const size_t& val) const
 	return val;
 }
 
+
+
 size_t Grid::check_win_col(const size_t& x, size_t y, const size_t& val) const
 {
 	size_t i = 0;
@@ -141,6 +157,8 @@ size_t Grid::check_win_col(const size_t& x, size_t y, const size_t& val) const
 
 	return val;
 }
+
+
 
 size_t Grid::check_win_diag(size_t x, size_t y, const size_t& val) const
 {
@@ -193,6 +211,7 @@ void	Grid::print() const
 	size_t val = check_win();
 	std::cout << (val == 0 ? "Pas win" : (val == 1 ? "Rouge win" : "Jaune win")) << std::endl << std::endl;
 }
+
 
 
 uint8_t Grid::get_move_count() const
